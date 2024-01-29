@@ -1,76 +1,136 @@
 version: '3'
 
 services:
-  gigachat_front:
+  palmon_front:
     image: httpd
-    container_name: gigachat_web
+    container_name: palmon_web
     restart: always
     ports:
       - ${WEB_PORT}:80
     networks:
-      - gigachat-network
+      - palmon-network
     volumes:
-      - ./front/src:/usr/local/apache2/htdocs
+      - ./front:/usr/local/apache2/htdocs
 
-  gigachat_backend:
+  palmon_backend:
+    image: fastapi
+    build:
+      context: back
     env_file:
       - .env
-    depends_on:
-      - gigachat_database
-    links:
-      - gigachat_database
-    build:
-      context: ./back
-    container_name: gigachat_back
+    container_name: palmon_back
     restart: always
-    volumes:
-      - .env:/.env
     ports:
       - ${BACK_PORT}:80
     networks:
-      - gigachat-network
+      - palmon-network
 
-  gigachat_database:
+  palmon_eggs:
+    image: fastapi
+    build:
+      context: services/eggs
     env_file:
       - .env
-    image: 'mariadb:latest'
-    container_name: gigachat_database
+    container_name: palmon_service_eggs
     restart: always
-    environment:
-      - MYSQL_USER=${SQL_USER}
-      - MYSQL_PASSWORD=${SQL_PASSWORD}
-      - MYSQL_DATABASE=${SQL_DATABASE}
-      - MYSQL_ROOT_PASSWORD=${SQL_ROOTPASSWORD}
-    volumes:
-      - ${SQL_DATA_PATH}:/var/lib/mysql/
-      - ./back/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - gigachat-network
-    hostname: gigachat_database
-
-  gigachat_phpmyadmin:
-    env_file:
-      - .env
-    image: phpmyadmin/phpmyadmin
-    container_name: gigachat_phpmyadmin
-    restart: always
-    depends_on:
-      - gigachat_database
-    links:
-      - gigachat_database
-    environment:
-      PMA_HOST: gigachat_database
-      PMA_USER: root
-      PMA_PASSWORD: ${SQL_ROOTPASSWORD}
-      PMA_PORT: 3306
-      PMA_ARBITRARY: 1
-    networks:
-      - gigachat-network
     ports:
-      - ${PMA_PORT}:80
+      - ${EGGS_SERVICE_PORT}:80
+    networks:
+      - palmon-network
+
+  palmon_fights:
+    image: fastapi
+    build:
+      context: services/fights
+    env_file:
+      - .env
+    container_name: palmon_service_fights
+    restart: always
+    ports:
+      - ${FIGHTS_SERVICE_PORT}:80
+    networks:
+      - palmon-network
+
+  palmon_palmons:
+    image: fastapi
+    build:
+      context: services/palmons
+    env_file:
+      - .env
+    container_name: palmon_service_palmons
+    restart: always
+    ports:
+      - ${PALMONS_SERVICE_PORT}:80
+    networks:
+      - palmon-network
+
+  palmon_shop:
+    image: fastapi
+    build:
+      context: services/shop
+    env_file:
+      - .env
+    container_name: palmon_service_shop
+    restart: always
+    ports:
+      - ${SHOP_SERVICE_PORT}:80
+    networks:
+      - palmon-network
+
+  palmon_users:
+    image: fastapi
+    build:
+      context: services/users
+    env_file:
+      - .env
+    container_name: palmon_service_users
+    restart: always
+    ports:
+      - ${USERS_SERVICE_PORT}:80
+    networks:
+      - palmon-network
+
+  # palmon_database:
+  #   env_file:
+  #     - .env
+  #   image: 'mariadb:latest'
+  #   container_name: palmon_database
+  #   restart: always
+  #   environment:
+  #     - MYSQL_USER=${SQL_USER}
+  #     - MYSQL_PASSWORD=${SQL_PASSWORD}
+  #     - MYSQL_DATABASE=${SQL_DATABASE}
+  #     - MYSQL_ROOT_PASSWORD=${SQL_ROOTPASSWORD}
+  #   volumes:
+  #     - ${SQL_DATA_PATH}:/var/lib/mysql/
+  #     - ./back/init.sql:/docker-entrypoint-initdb.d/init.sql
+  #   networks:
+  #     - palmon-network
+  #   hostname: palmon_database
+
+  # palmon_phpmyadmin:
+  #   env_file:
+  #     - .env
+  #   image: phpmyadmin/phpmyadmin
+  #   container_name: palmon_phpmyadmin
+  #   restart: always
+  #   depends_on:
+  #     - palmon_database
+  #   links:
+  #     - palmon_database
+  #   environment:
+  #     PMA_HOST: palmon_database
+  #     PMA_USER: root
+  #     PMA_PASSWORD: ${SQL_ROOTPASSWORD}
+  #     PMA_PORT: 3306
+  #     PMA_ARBITRARY: 1
+  #   networks:
+  #     - palmon-network
+  #   ports:
+  #     - ${PMA_PORT}:80
 
   
 networks:
-  gigachat-network:
-    name: gigachat-network
+  palmon-network:
+    name: palmon-network
     driver: bridge
