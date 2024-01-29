@@ -17,15 +17,14 @@ services:
       context: back
     env_file:
       - .env
-    container_name: palmon_back
+    container_name: palmon_backend
     restart: always
     ports:
       - ${BACK_PORT}:80
     networks:
       - palmon-network
 
-  palmon_eggs:
-    image: fastapi
+  palmon_service_eggs:
     build:
       context: services/eggs
     env_file:
@@ -36,9 +35,27 @@ services:
       - ${EGGS_SERVICE_PORT}:80
     networks:
       - palmon-network
+    hostname: palmon_service_eggs
 
-  palmon_fights:
-    image: fastapi
+  palmon_database_eggs:
+    env_file:
+      - .env
+    image: 'mariadb:latest'
+    container_name: palmon_database_eggs
+    restart: always
+    environment:
+      - MYSQL_USER=${SERV_EGGS_SQL_USER}
+      - MYSQL_PASSWORD=${SERV_EGGS_SQL_PASSWORD}
+      - MYSQL_DATABASE=${SERV_EGGS_SQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${SERV_EGGS_SQL_ROOTPASSWORD}
+    volumes:
+      - ${SERV_EGGS_SQL_DATA_PATH}:/var/lib/mysql/
+      - ./services/eggs/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - palmon-network
+    hostname: palmon_database_eggs
+
+  palmon_service_fights:
     build:
       context: services/fights
     env_file:
@@ -49,9 +66,9 @@ services:
       - ${FIGHTS_SERVICE_PORT}:80
     networks:
       - palmon-network
+    hostname: palmon_service_fights
 
-  palmon_palmons:
-    image: fastapi
+  palmon_service_palmons:
     build:
       context: services/palmons
     env_file:
@@ -62,9 +79,27 @@ services:
       - ${PALMONS_SERVICE_PORT}:80
     networks:
       - palmon-network
+    hostname: palmon_service_palmons
 
-  palmon_shop:
-    image: fastapi
+  palmon_database_palmons:
+    env_file:
+      - .env
+    image: 'mariadb:latest'
+    container_name: palmon_database_palmons
+    restart: always
+    environment:
+      - MYSQL_USER=${SERV_PALMON_SQL_USER}
+      - MYSQL_PASSWORD=${SERV_PALMON_SQL_PASSWORD}
+      - MYSQL_DATABASE=${SERV_PALMON_SQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${SERV_PALMON_SQL_ROOTPASSWORD}
+    volumes:
+      - ${SERV_PALMON_SQL_DATA_PATH}:/var/lib/mysql/
+      - ./services/palmons/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - palmon-network
+    hostname: palmon_database_palmons
+
+  palmon_service_shop:
     build:
       context: services/shop
     env_file:
@@ -75,37 +110,25 @@ services:
       - ${SHOP_SERVICE_PORT}:80
     networks:
       - palmon-network
+    hostname: palmon_service_shop
 
-  palmon_users:
-    image: fastapi
-    build:
-      context: services/users
+  palmon_database_shop:
     env_file:
       - .env
-    container_name: palmon_service_users
+    image: 'mariadb:latest'
+    container_name: palmon_database_shop
     restart: always
-    ports:
-      - ${USERS_SERVICE_PORT}:80
+    environment:
+      - MYSQL_USER=${SERV_SHOP_SQL_USER}
+      - MYSQL_PASSWORD=${SERV_SHOP_SQL_PASSWORD}
+      - MYSQL_DATABASE=${SERV_SHOP_SQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${SERV_SHOP_SQL_ROOTPASSWORD}
+    volumes:
+      - ${SERV_SHOP_SQL_DATA_PATH}:/var/lib/mysql/
+      - ./services/shop/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - palmon-network
-
-  # palmon_database:
-  #   env_file:
-  #     - .env
-  #   image: 'mariadb:latest'
-  #   container_name: palmon_database
-  #   restart: always
-  #   environment:
-  #     - MYSQL_USER=${SQL_USER}
-  #     - MYSQL_PASSWORD=${SQL_PASSWORD}
-  #     - MYSQL_DATABASE=${SQL_DATABASE}
-  #     - MYSQL_ROOT_PASSWORD=${SQL_ROOTPASSWORD}
-  #   volumes:
-  #     - ${SQL_DATA_PATH}:/var/lib/mysql/
-  #     - ./back/init.sql:/docker-entrypoint-initdb.d/init.sql
-  #   networks:
-  #     - palmon-network
-  #   hostname: palmon_database
+    hostname: palmon_database_shop
 
   # palmon_phpmyadmin:
   #   env_file:
