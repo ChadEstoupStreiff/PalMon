@@ -12,16 +12,15 @@ function load_menu(menu) {
 }
 
 window.onload = () => {
-    if (user == null) {
-        document.getElementById("header").childNodes.forEach((menu) => {
-            menu.addEventListener("click", () => {
-                document.getElementById("header").childNodes.forEach((menu_bis) => {menu_bis.className = ""});
-                menu.className = "selected"
-                load_menu(menu.innerHTML);
-            })
+    document.getElementById("header").childNodes.forEach((menu) => {
+        menu.addEventListener("click", () => {
+            document.getElementById("header").childNodes.forEach((menu_bis) => {menu_bis.className = ""});
+            menu.className = "selected"
+            load_menu(menu.innerHTML);
         })
-        
-        
+    })
+    
+    if (user == null) {
         div = document.createElement("div")
         div.id = "login_name"
         document.body.appendChild(div)
