@@ -76,6 +76,10 @@ services:
       - .env
     container_name: palmon_service_palmons
     restart: always
+    links:
+      - palmon_database_palmons
+    depends_on:
+      - palmon_database_palmons
     volumes:
       - ./.env:/.env
     ports:

@@ -5,6 +5,7 @@ from db import DB
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from objects import BagSlot, Palmon, StorageSlot
+from presets import Presets
 
 app = FastAPI()
 
@@ -29,15 +30,17 @@ async def endpoint_palmon_get(palmon_id: int) -> None:
 
 @app.post("/palmon", tags=["palmon"])
 async def endpoint_palmon_create() -> None:
-    max_hp = Random().randint(80, 120)
+    preset = Presets.palmons_preset[
+        Random().randint(0, len(Presets.palmons_preset) - 1)
+    ]
     palmon = Palmon(
-        type="picmi",
+        type=preset[0],
         lvl=1,
-        hp=max_hp,
-        stat_hp=max_hp,
-        stat_dmg=Random().randint(80, 120),
-        stat_def=Random().randint(80, 120),
-        stat_spd=Random().randint(80, 120),
+        exp=0,
+        stat_hp=Random().randint(int(preset[1] * 0.9), int(preset[1] * 1.1)),
+        stat_dmg=Random().randint(int(preset[2] * 0.9), int(preset[2] * 1.1)),
+        stat_def=Random().randint(int(preset[3] * 0.9), int(preset[3] * 1.1)),
+        stat_spd=Random().randint(int(preset[4] * 0.9), int(preset[4] * 1.1)),
     )
     commit = DB().get()
     commit.add(palmon)
@@ -118,6 +121,8 @@ def get_storage_of(user: str) -> List[Palmon]:
         .query(Palmon)
         .join(StorageSlot)
         .filter(StorageSlot.owner == user)
+        .order_by(Palmon.lvl.desc())
+        .order_by(Palmon.id.desc())
         .all()
     )
 

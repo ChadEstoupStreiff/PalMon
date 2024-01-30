@@ -12,7 +12,7 @@ class Palmon(Base):
     id = Column(Integer, primary_key=True)
     type = Column(String(16))
     lvl = Column(Integer)
-    hp = Column(Integer)
+    exp = Column(Integer)
     stat_hp = Column(Integer)
     stat_dmg = Column(Integer)
     stat_def = Column(Integer)
