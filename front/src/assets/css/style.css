@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+
+    margin: 0;
+    padding: 0;
+
+    background-color: rgb(10, 10, 10);
+    color: white;
+}
+
+header {
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: end; 
+   border-bottom: 2px solid rgb(80, 80, 80);
+
+   position: sticky;
+
+   width: 100vw;
+   height: 5vh;
+}
+
+header h1 {
+    font-size: 2em;
+    margin: 0 10px;
+    padding: 0 10px;
+
+    border-radius: 10px 10px 0 0 ;
+    transition-duration: 1sec;
+
+    cursor: pointer;
+}
+
+header h1.selected {
+    background-color: rgb(80, 80, 80);
+    color: white;
+}
+
+#content {
+    min-height: 95vh;
+    width: 100vw;
+}
