@@ -1,18 +1,6 @@
 function cheat_palmon() {
-    fetch(api_url + 'palmon', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-        },
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Network response was not ok.');
-        }
-    }).then(data => {
-        fetch(api_url + 'storage?user=' + user + '&palmon_id=' + data.id, {
+    for (var i = 0; i < 10; i++) {
+        fetch(api_url + 'palmon', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -25,29 +13,37 @@ function cheat_palmon() {
                 throw new Error('Network response was not ok.');
             }
         }).then(data => {
-            if (data.length > 0)
-                data.forEach(palmon => {
-                    display_palmon_card(bag, palmon)
-                });
-            else {
-                error = document.createElement("h1")
-                error.innerHTML = "No Palmons"
-                bag.appendChild(error)
-            }
+            fetch(api_url + 'storage?user=' + user + '&palmon_id=' + data.id, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
         });
-    })
-    .catch(error => {
-        console.error('There has been a problem with your fetch operation:', error);
-    });
+
+        load_inventory()
+    }
 }
 
 function display_info_palmon(palmon) {
     div = document.createElement("div");
-    div.id = "palmon_info"
 
+    div.className = palmon.rarity
+    div.id = "palmon_info"
+    
     img = document.createElement("img")
     img.src = assets_url + "img/palmons/" + palmon.type + ".webp"
     div.appendChild(img)
@@ -55,6 +51,10 @@ function display_info_palmon(palmon) {
     palmonname = document.createElement("h1")
     palmonname.innerHTML = palmon.type
     div.appendChild(palmonname)
+
+    palmonrarity = document.createElement("h2")
+    palmonrarity.innerHTML = palmon.rarity
+    div.appendChild(palmonrarity)
 
     lvl = document.createElement("h3")
     lvl.innerHTML = "lvl " + palmon.lvl + " | exp " + palmon.exp
@@ -69,6 +69,7 @@ function display_info_palmon(palmon) {
     switch_button = document.createElement("p");
     switch_button.className = "button"
     switch_button.addEventListener("click", () => {
+        start_loading()
         fetch(api_url + 'switch?user=' + user + '&palmon_id=' + palmon.id, {
             method: 'PUT',
             headers: {
@@ -76,7 +77,6 @@ function display_info_palmon(palmon) {
             },
         })
         .then(() => {
-            clear_menu()
             load_inventory()
         })
         document.body.removeChild(div)
@@ -87,6 +87,7 @@ function display_info_palmon(palmon) {
     release_button = document.createElement("p");
     release_button.className = "button red"
     release_button.addEventListener("click", () => {
+        start_loading()
         fetch(api_url + 'release?user=' + user + '&palmon_id=' + palmon.id, {
             method: 'DELETE',
             headers: {
@@ -94,7 +95,6 @@ function display_info_palmon(palmon) {
             },
         })
         .then(() => {
-            clear_menu()
             load_inventory()
         })
         document.body.removeChild(div)
@@ -117,13 +117,13 @@ function display_info_palmon(palmon) {
 
 function display_palmon_card(element, palmon) {
     div = document.createElement("div");
-    div.className = "palmon_card"
+    div.className = "palmon_card " + palmon.rarity
 
     img = document.createElement("img")
     img.src = assets_url + "img/palmons/" + palmon.type + ".webp"
     div.appendChild(img)
 
-    palmonname = document.createElement("h2")
+    palmonname = document.createElement("h1")
     palmonname.innerHTML = palmon.type
     div.appendChild(palmonname)
 
@@ -131,9 +131,9 @@ function display_palmon_card(element, palmon) {
     lvl.innerHTML = "lvl " + palmon.lvl + " | exp " + palmon.exp
     div.appendChild(lvl)
 
-    stats = document.createElement("p")
-    stats.innerHTML = "HP " + palmon.stat_hp + "<br/>Damage " + palmon.stat_dmg + "<br/>Defense " + palmon.stat_def + "<br/>Speed " + palmon.stat_spd
-    div.appendChild(stats)
+    // stats = document.createElement("p")
+    // stats.innerHTML = "HP " + palmon.stat_hp + "<br/>Damage " + palmon.stat_dmg + "<br/>Defense " + palmon.stat_def + "<br/>Speed " + palmon.stat_spd
+    // div.appendChild(stats)
 
     element.appendChild(div)
 
@@ -143,6 +143,9 @@ function display_palmon_card(element, palmon) {
 }
 
 function load_inventory() {
+    start_loading()
+    clear_menu()
+
     content = document.getElementById("content")
 
     bag_title = document.createElement("h2")
@@ -174,42 +177,45 @@ function load_inventory() {
             throw new Error('Network response was not ok.');
         }
     }).then(data => {
-        if (data.length > 0)
+        if (data.length > 0) {
             data.forEach(palmon => {
                 display_palmon_card(bag, palmon)
             });
-        else {
+        } else {
             error = document.createElement("h1")
             error.innerHTML = "No Palmon"
             bag.appendChild(error)
         }
-    })
-    .catch(error => {
-        console.error('There has been a problem with your fetch operation:', error);
-    });
 
-    fetch(api_url + 'storage?user=' + user, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-        },
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Network response was not ok.');
-        }
-    }).then(data => {
-        if (data.length > 0)
-            data.forEach(palmon => {
-                display_palmon_card(storage, palmon)
-            });
-        else {
-            error = document.createElement("h1")
-            error.innerHTML = "No Palmon"
-            storage.appendChild(error)
-        }
+        fetch(api_url + 'storage?user=' + user, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Network response was not ok.');
+            }
+        }).then(data => {
+            if (data.length > 0) {
+                data.forEach(palmon => {
+                    display_palmon_card(storage, palmon)
+                });
+            }
+            else {
+                error = document.createElement("h1")
+                error.innerHTML = "No Palmon"
+                storage.appendChild(error)
+            }
+
+            stop_loading()
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
     })
     .catch(error => {
         console.error('There has been a problem with your fetch operation:', error);

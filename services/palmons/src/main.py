@@ -33,12 +33,16 @@ async def endpoint_palmon_create() -> None:
     rarity = Random().randint(1, 1000)
     if rarity > 995:
         preset = Presets.palmons_preset_legendary # 0.5%
+        rarity = "Legendary"
     elif rarity > 900:
         preset = Presets.palmons_preset_epic # 9.5%
+        rarity = "Epic"
     elif rarity > 600:
         preset = Presets.palmons_preset_rare # 30%
+        rarity = "Rare"
     else:
         preset = Presets.palmons_preset_common # 60%
+        rarity = "Common"
     preset = preset[
         Random().randint(0, len(preset) - 1)
     ]
@@ -46,6 +50,7 @@ async def endpoint_palmon_create() -> None:
         type=preset[0],
         lvl=1,
         exp=0,
+        rarity=rarity,
         stat_hp=Random().randint(int(preset[1] * 0.9), int(preset[1] * 1.1)),
         stat_dmg=Random().randint(int(preset[2] * 0.9), int(preset[2] * 1.1)),
         stat_def=Random().randint(int(preset[3] * 0.9), int(preset[3] * 1.1)),

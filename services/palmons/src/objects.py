@@ -11,6 +11,7 @@ class Palmon(Base):
 
     id = Column(Integer, primary_key=True)
     type = Column(String(16))
+    rarity = Column(String(12))
     lvl = Column(Integer)
     exp = Column(Integer)
     stat_hp = Column(Integer)

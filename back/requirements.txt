@@ -1,4 +1,5 @@
 python-dotenv==1.0.0
-fastapi
+fastapi==0.109.*
 uvicorn[standard]
-python-multipart
+python-multipart==0.0.*
+requests==2.31.*
