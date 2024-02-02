@@ -1,9 +1,11 @@
-
-
-function load_menu(menu) {
+function clear_menu() {
     while (document.getElementById("content").firstChild) {
         document.getElementById("content").removeChild(document.getElementById("content").firstChild);
     }
+}
+
+function load_menu(menu) {
+    clear_menu()
     switch (menu) {
         default:
             load_inventory()

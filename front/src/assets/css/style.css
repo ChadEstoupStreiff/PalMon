@@ -38,7 +38,33 @@ header h1.selected {
     color: white;
 }
 
+hr {
+    margin: 20px;
+}
+
 #content {
     min-height: 95vh;
     width: 100vw;
+}
+
+img {
+    border-radius: 30px;
+}
+
+.button {
+    padding: 10px 30px;
+    margin: 10px;
+    font-size: 1.4em;
+    min-width: 15vw;
+
+    border-radius: 20px;
+    background-color: green;
+}
+
+.button.red {
+    background-color: darkred;
+}
+
+.button:hover {
+    cursor: pointer;
 }

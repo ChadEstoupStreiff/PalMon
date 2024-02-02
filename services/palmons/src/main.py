@@ -48,7 +48,7 @@ async def endpoint_palmon_create() -> None:
     return DB().get().query(Palmon).order_by(Palmon.id.desc()).first()
 
 
-@app.put("/switch", tags=["bag", "storage"])
+@app.put("/switch", tags=["palmon"])
 async def switch_bag_storage(user: str, palmon_id: int):
     commit = DB().get()
 
@@ -80,6 +80,31 @@ async def switch_bag_storage(user: str, palmon_id: int):
     return False
 
 
+@app.delete("/release", tags=["palmon"])
+async def endpoint_bag_delete(user: str, palmon_id: int):
+    commit = DB().get()
+    bag = (
+        commit.query(BagSlot)
+        .filter(BagSlot.owner == user)
+        .filter(BagSlot.palmon_id == palmon_id)
+        .first()
+    )
+    if bag:
+        commit.delete(bag)
+
+    storage = (
+        commit.query(StorageSlot)
+        .filter(StorageSlot.owner == user)
+        .filter(StorageSlot.palmon_id == palmon_id)
+        .first()
+    )
+    if storage:
+        commit.delete(storage)
+
+    commit.commit()
+    return True
+
+
 def get_bag_of(user: str) -> List[Palmon]:
     return DB().get().query(Palmon).join(BagSlot).filter(BagSlot.owner == user).all()
 
@@ -91,27 +116,19 @@ async def endpoint_bag_get(user: str) -> None:
 
 @app.post("/bag", tags=["bag"])
 async def endpoint_bag_post(user: str, palmon_id: int) -> bool:
-    if len(get_bag_of(user)) < 6:
+    commit = DB().get()
+    if (
+        not (commit.query(BagSlot).filter(BagSlot.palmon_id == palmon_id).first())
+        and not (
+            commit.query(StorageSlot).filter(StorageSlot.palmon_id == palmon_id).first()
+        )
+        and len(get_bag_of(user)) < 6
+    ):
         bag = BagSlot(owner=user, palmon_id=palmon_id)
-        commit = DB().get()
         commit.add(bag)
         commit.commit()
         return True
     return False
-
-
-@app.delete("/bag", tags=["bag"])
-async def endpoint_bag_delete(user: str, palmon_id: int):
-    commit = DB().get()
-    storage = (
-        commit.query(BagSlot)
-        .filter(BagSlot.owner == user)
-        .filter(BagSlot.palmon_id == palmon_id)
-        .first()
-    )
-    commit.delete(storage)
-    commit.commit()
-    return True
 
 
 def get_storage_of(user: str) -> List[Palmon]:
@@ -134,22 +151,14 @@ async def endpoint_storage_get(user: str) -> None:
 
 @app.post("/storage", tags=["storage"])
 async def endpoint_storage_post(user: str, palmon_id: int):
-    storage = StorageSlot(owner=user, palmon_id=palmon_id)
     commit = DB().get()
-    commit.add(storage)
-    commit.commit()
-    return True
-
-
-@app.delete("/storage", tags=["storage"])
-async def endpoint_storage_delete(user: str, palmon_id: int) -> bool:
-    commit = DB().get()
-    storage = (
-        commit.query(StorageSlot)
-        .filter(StorageSlot.owner == user)
-        .filter(StorageSlot.palmon_id == palmon_id)
-        .first()
-    )
-    commit.delete(storage)
-    commit.commit()
-    return True
+    if not (
+        commit.query(BagSlot).filter(BagSlot.palmon_id == palmon_id).first()
+    ) and not (
+        commit.query(StorageSlot).filter(StorageSlot.palmon_id == palmon_id).first()
+    ):
+        storage = StorageSlot(owner=user, palmon_id=palmon_id)
+        commit.add(storage)
+        commit.commit()
+        return True
+    return False

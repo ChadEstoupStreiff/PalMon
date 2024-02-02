@@ -9,4 +9,6 @@ class Presets:
         ["SpikeGuardian", 100, 100, 100, 100],
         ["ThunderMaw", 100, 100, 100, 100],
         ["ZephyrStride", 100, 100, 100, 100],
+        ["MoonlitOracle", 100, 100, 100, 100],
+        ["SilverSage", 100, 100, 100, 100],
     ]
