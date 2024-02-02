@@ -14,7 +14,7 @@ header {
    flex-direction: row;
    justify-content: center;
    align-items: end; 
-   border-bottom: 2px solid rgb(80, 80, 80);
+   border-bottom: 2px solid #FF3D00;
 
    position: sticky;
 
@@ -34,7 +34,7 @@ header h1 {
 }
 
 header h1.selected {
-    background-color: rgb(80, 80, 80);
+    background-color: #FF3D00;
     color: white;
 }
 
@@ -45,10 +45,13 @@ hr {
 #content {
     min-height: 95vh;
     width: 100vw;
+    margin-top: 50px;
 }
 
 img {
     border-radius: 30px;
+    border: 3px solid #FF3D00;
+
 }
 
 .button {
