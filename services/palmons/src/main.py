@@ -30,8 +30,17 @@ async def endpoint_palmon_get(palmon_id: int) -> None:
 
 @app.post("/palmon", tags=["palmon"])
 async def endpoint_palmon_create() -> None:
-    preset = Presets.palmons_preset[
-        Random().randint(0, len(Presets.palmons_preset) - 1)
+    rarity = Random().randint(1, 1000)
+    if rarity > 995:
+        preset = Presets.palmons_preset_legendary # 0.5%
+    elif rarity > 900:
+        preset = Presets.palmons_preset_epic # 9.5%
+    elif rarity > 600:
+        preset = Presets.palmons_preset_rare # 30%
+    else:
+        preset = Presets.palmons_preset_common # 60%
+    preset = preset[
+        Random().randint(0, len(preset) - 1)
     ]
     palmon = Palmon(
         type=preset[0],
