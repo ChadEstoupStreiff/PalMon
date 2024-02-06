@@ -7,6 +7,9 @@ function clear_menu() {
 function load_menu(menu) {
     clear_menu()
     switch (menu) {
+        case "shopping_cart":
+            load_shop()
+            break;
         default:
             load_inventory()
             break;
@@ -18,7 +21,7 @@ window.onload = () => {
         menu.addEventListener("click", () => {
             document.getElementById("header").childNodes.forEach((menu_bis) => {menu_bis.className = ""});
             menu.className = "selected"
-            load_menu(menu.innerHTML);
+            load_menu(menu.childNodes[0].innerHTML);
         })
     })
     

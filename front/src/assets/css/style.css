@@ -43,6 +43,11 @@ hr {
 }
 
 #content {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+
     min-height: 95vh;
     width: 100vw;
     margin-top: 50px;

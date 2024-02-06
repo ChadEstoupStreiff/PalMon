@@ -1,0 +1,53 @@
+
+
+#shop_amount {
+    border: 3px solid #FF3D00;
+    background-color: rgb(50, 50, 50);
+
+    margin-bottom: 100px;
+    width: 200px
+}
+
+#shop_buy, #shop_sell {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    min-height: 10vh;
+    width: 90vw;
+    margin: 0 5vw 5vh 5vw;
+
+    background-color: rgb(50, 50, 50);
+    border-radius: 20px;
+    border: 1px solid #FF3D00;
+}
+
+#shop_buy img, #shop_sell img {
+    width: 150px;
+}
+
+.shop_item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 180px;
+    height: 250px;
+
+    border-radius: 30px;
+    margin: 10px;
+    padding: 15px;
+
+    background-color: rgb(170, 170, 170);
+    cursor: pointer;
+    transition-duration: 1s;
+
+    color: black
+}
+
+.shop_item:hover {
+    background-color: white;
+}
