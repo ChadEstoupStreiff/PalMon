@@ -14,3 +14,7 @@ app.add_middleware(
 import palmons
 
 app.include_router(palmons.router)
+
+import shop
+
+app.include_router(shop.router)
