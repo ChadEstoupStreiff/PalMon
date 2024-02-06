@@ -1,5 +1,7 @@
 #loading {
     z-index: 100;
+
+    background-color: rgb(10, 10, 10);
 }
 
 .loader {

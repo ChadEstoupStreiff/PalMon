@@ -13,6 +13,18 @@ services:
     networks:
       - palmon-network
 
+  rabbitmq-back:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq-back'
+    ports:
+        - ${RABBIT_BACK_PORT_1}:5672
+        - ${RABBIT_BACK_PORT_2}:15672
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+        - palmon-network
+
   palmon_backend:
     image: fastapi
     build:
@@ -112,6 +124,8 @@ services:
       - .env
     container_name: palmon_service_shop
     restart: always
+    volumes:
+      - ./.env:/.env
     ports:
       - ${SHOP_SERVICE_PORT}:80
     networks:

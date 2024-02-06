@@ -13,7 +13,7 @@ class DB:
             config = dotenv_values("/.env")
 
             DB.__instance.engine = create_engine(
-                f'mysql+mysqldb://{config["SERV_PALMON_SQL_USER"]}:{config["SERV_PALMON_SQL_PASSWORD"]}@palmon_database_palmons:3306/{config["SERV_PALMON_SQL_DATABASE"]}'
+                f'mysql+mysqldb://{config["SERV_SHOP_SQL_USER"]}:{config["SERV_SHOP_SQL_PASSWORD"]}@palmon_database_shop:3306/{config["SERV_SHOP_SQL_DATABASE"]}'
             )
         return DB.__instance
 
