@@ -1,9 +1,8 @@
-
+from db import DB
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from presets import Preset
-from db import DB
 from objects import Thune
+from presets import Preset
 
 app = FastAPI()
 
@@ -35,7 +34,11 @@ async def endpoint_money(user: str):
 @app.put("/buy")
 async def endpoint_shop_buy(user: str, object: str) -> None:
     amount = DB().get().query(Thune).filter(Thune.owner == user).first()
-    if amount is not None and object in Preset.buy_prices and amount.amount >= Preset.buy_prices[object]:
+    if (
+        amount is not None
+        and object in Preset.buy_prices
+        and amount.amount >= Preset.buy_prices[object]
+    ):
         commit = DB().get()
         amount = commit.query(Thune).filter(Thune.owner == user).first()
         amount.amount -= Preset.buy_prices[object]

@@ -7,4 +7,3 @@ class Preset:
     sell_prices = {
         "egg": 25,
     }
-
