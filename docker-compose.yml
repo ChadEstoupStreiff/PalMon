@@ -17,13 +17,13 @@ services:
     image: rabbitmq:3-management-alpine
     container_name: 'rabbitmq-back'
     ports:
-        - ${RABBIT_BACK_PORT_1}:5672
-        - ${RABBIT_BACK_PORT_2}:15672
+      - ${RABBIT_BACK_PORT_1}:5672
+      - ${RABBIT_BACK_PORT_2}:15672
     volumes:
-        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
     networks:
-        - palmon-network
+      - palmon-network
 
   palmon_backend:
     image: fastapi
@@ -45,6 +45,12 @@ services:
       - .env
     container_name: palmon_service_eggs
     restart: always
+    links:
+      - palmon_database_eggs
+    depends_on:
+      - palmon_database_eggs
+    volumes:
+      - ./.env:/.env
     ports:
       - ${EGGS_SERVICE_PORT}:80
     networks:
@@ -148,7 +154,6 @@ services:
     networks:
       - palmon-network
     hostname: palmon_database_shop
-
   # palmon_phpmyadmin:
   #   env_file:
   #     - .env
@@ -170,7 +175,7 @@ services:
   #   ports:
   #     - ${PMA_PORT}:80
 
-  
+
 networks:
   palmon-network:
     name: palmon-network
