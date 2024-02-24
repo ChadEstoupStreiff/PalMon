@@ -11,9 +11,9 @@ async def endpoint_palmon_get(palmon_id: int) -> None:
     ).json()
 
 
-@router.post("/palmon")
-async def endpoint_palmon_create() -> None:
-    return requests.post("http://palmon_service_palmons:80/palmon").json()
+# @router.post("/palmon")
+# async def endpoint_palmon_create() -> None:
+#     return requests.post("http://palmon_service_palmons:80/palmon").json()
 
 
 @router.put("/switch")

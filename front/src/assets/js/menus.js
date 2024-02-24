@@ -10,6 +10,9 @@ function load_menu(menu) {
         case "shopping_cart":
             load_shop()
             break;
+        case "egg":
+            load_incubator()
+            break;
         default:
             load_inventory()
             break;

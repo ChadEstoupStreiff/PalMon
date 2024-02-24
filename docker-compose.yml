@@ -74,18 +74,18 @@ services:
       - palmon-network
     hostname: palmon_database_eggs
 
-  palmon_service_fights:
-    build:
-      context: services/fights
-    env_file:
-      - .env
-    container_name: palmon_service_fights
-    restart: always
-    ports:
-      - ${FIGHTS_SERVICE_PORT}:80
-    networks:
-      - palmon-network
-    hostname: palmon_service_fights
+  # palmon_service_fights:
+  #   build:
+  #     context: services/fights
+  #   env_file:
+  #     - .env
+  #   container_name: palmon_service_fights
+  #   restart: always
+  #   ports:
+  #     - ${FIGHTS_SERVICE_PORT}:80
+  #   networks:
+  #     - palmon-network
+  #   hostname: palmon_service_fights
 
   palmon_service_palmons:
     build:

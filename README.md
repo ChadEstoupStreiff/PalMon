@@ -1,8 +1,10 @@
-# PalMon
+# 🐙 PalMon
+
+The game complete all requierements for evaluation. But there is no full game loop as you can't get eggs that are obtainable in "adventure map" wich is not implemented yet. To test everything, we invite you to use cheat codes described at the end of the README file :)  
 
 ![Schema](ressources/micro_service.drawio-1.png)
 
-# Setup
+# ⚙️ Setup
 
 Clone this repo
 > git clone https://github.com/ChadEstoupStreiff/PalMon.git  
@@ -17,3 +19,18 @@ Edit front end config with your values
 
 Launch with docker compose
 > docker-compose up -d --build
+
+# 🔥 Cheats
+Open your JS console and here is some usefull function:
+- Give yourself as many eggs as you want
+> cheat_eggs(quantity: int)  
+
+- Give yourself as many dollars as you want
+> cheat_dollars(amount: int)  
+
+- Give yourself as many palmon as you want
+> cheat_palmon(quantity: int)  
+
+- Force a hatch from an interdimensional incubator
+> cheat_hatch()  
+

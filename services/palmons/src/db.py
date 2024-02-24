@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 
 class DB:
     __instance = None
+    __last_session = None
 
     @staticmethod
     def __new__(cls, *args, **kwargs):
@@ -18,5 +19,10 @@ class DB:
         return DB.__instance
 
     def get(self):
+        if self.__last_session is not None:
+            self.__last_session.commit()
+            self.__last_session.close()
+            self.__last_session.close_all()
         Session = sessionmaker(bind=self.engine)
-        return Session()
+        self.__last_session = Session()
+        return self.__last_session
