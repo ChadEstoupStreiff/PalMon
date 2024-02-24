@@ -1,6 +1,7 @@
 # 🐙 PalMon
 
 The game complete all requierements for evaluation. But there is no full game loop as you can't get eggs that are obtainable in "adventure map" wich is not implemented yet. To test everything, we invite you to use cheat codes described at the end of the README file :)  
+### [You have a demo here: https://palmon.chades.fr/](https://palmon.chades.fr/)
 
 ![Schema](ressources/micro_service.drawio-1.png)
 
@@ -19,6 +20,10 @@ Edit front end config with your values
 
 Launch with docker compose
 > docker-compose up -d --build
+
+# ⁉️ Troubleshot
+
+If the loading screen on your web app is infinite, consider restarting micro-services (palmon_service_eggs, palmon_service_palmons, palmon_service_shop), they try to connect to DB to soon.
 
 # 🔥 Cheats
 Open your JS console and here is some usefull function:
