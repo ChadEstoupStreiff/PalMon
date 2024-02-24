@@ -129,7 +129,7 @@ async def endpoint_incubator_hatch(owner: str, incubator_id: int) -> bool:
     if (
         incubator is not None
         and incubator.occupied
-        # and incubator.hatch_date <= datetime.now()
+        and incubator.hatch_date <= datetime.now()
     ):
         incubator.occupied = False
         incubator.hatch_date = None

@@ -28,7 +28,7 @@ Open your JS console and here is some usefull function:
 - Give yourself as many dollars as you want
 > cheat_dollars(amount: int)  
 
-- Give yourself as many palmon as you want
+- Give yourself as many palmon as you want (in storage)
 > cheat_palmon(quantity: int)  
 
 - Force a hatch from an interdimensional incubator

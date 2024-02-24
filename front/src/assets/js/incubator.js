@@ -1,4 +1,91 @@
-hatched_palmon = null
+hatched_palmon = []
+function hatched_menu() {
+
+    title = document.createElement("h1")
+    title.innerHTML = "Hatched"
+    document.getElementById("content").appendChild(title)
+
+    hatched_div = document.createElement("div")
+    hatched_div.id="shop_sell"
+
+
+    hatched_palmon.forEach((palmon) => {
+        div = document.createElement("div");
+        div.className = "hatched_palmon_card " + palmon.rarity
+
+        img = document.createElement("img")
+        img.src = assets_url + "img/palmons/" + palmon.type + ".webp"
+        div.appendChild(img)
+
+        palmonname = document.createElement("h1")
+        palmonname.innerHTML = palmon.type
+        div.appendChild(palmonname)
+
+        stats = document.createElement("p")
+        stats.innerHTML = "HP " + palmon.stat_hp + "<br/>Damage " + palmon.stat_dmg + "<br/>Defense " + palmon.stat_def + "<br/>Speed " + palmon.stat_spd
+        div.appendChild(stats)
+
+        switch_button = document.createElement("p");
+        switch_button.className = "button"
+        switch_button.addEventListener("click", () => {
+            start_loading()
+            fetch(api_url + 'bag?user=' + user + '&palmon_id=' + palmon.id, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            })
+            .then((response) => {
+                if (response) {
+                    hatched_palmon.splice(hatched_palmon.indexOf(palmon), 1)
+                }
+                load_incubator()
+            })
+        })
+        switch_button.innerHTML = "Place in equipe"
+        div.appendChild(switch_button)
+
+
+        switch_button = document.createElement("p");
+        switch_button.className = "button"
+        switch_button.addEventListener("click", () => {
+            start_loading()
+            fetch(api_url + 'storage?user=' + user + '&palmon_id=' + palmon.id, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                },
+            })
+            .then(() => {
+                hatched_palmon.splice(hatched_palmon.indexOf(palmon), 1)
+                load_incubator()
+            })
+        })
+        switch_button.innerHTML = "Place in storage"
+        div.appendChild(switch_button)
+
+        switch_button = document.createElement("p");
+        switch_button.className = "button red"
+        switch_button.addEventListener("click", () => {
+            start_loading()
+            hatched_palmon.splice(hatched_palmon.indexOf(palmon), 1)
+            load_incubator()
+        })
+        switch_button.innerHTML = "Release"
+        div.appendChild(switch_button)
+
+        hatched_div.appendChild(div)
+    })
+
+    document.getElementById("content").appendChild(hatched_div)
+}
 
 function hatch(incubator_id) {
     start_loading()
@@ -17,7 +104,7 @@ function hatch(incubator_id) {
     })
     .then(response => {
         if (response != false) {
-            hatched_palmon = response
+            hatched_palmon.push(response)
         }
         load_incubator()
     })
@@ -125,8 +212,12 @@ function load_incubator() {
                     incubator_div.appendChild(item_div)
                 });
 
+                if (hatched_palmon.length > 0) {
+                    hatched_menu()
+                }
                 document.getElementById("content").appendChild(incubator_div)
                 stop_loading()
+
             })
         })
     })
