@@ -26,4 +26,3 @@ app.include_router(egg.router)
 import cheat
 
 app.include_router(cheat.router)
-

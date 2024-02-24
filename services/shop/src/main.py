@@ -1,4 +1,3 @@
-
 from db import DB
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -31,6 +30,7 @@ async def endpoint_money(user: str):
         return amount.amount
     return 0
 
+
 @app.post("/money")
 async def endpoint_give_money(user: str, amount: int):
     commit = DB().get()
@@ -38,10 +38,7 @@ async def endpoint_give_money(user: str, amount: int):
     if db_amount is not None:
         db_amount.amount += amount
     else:
-        db_amount = Thune(
-            owner=user,
-            amount=amount
-        )
+        db_amount = Thune(owner=user, amount=amount)
         commit.add(db_amount)
     commit.commit()
 

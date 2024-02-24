@@ -26,4 +26,3 @@ class DB:
         Session = sessionmaker(bind=self.engine)
         self.__last_session = Session()
         return self.__last_session
-

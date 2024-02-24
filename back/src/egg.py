@@ -31,12 +31,16 @@ async def endpoint_incubator_get(user: str) -> None:
 
 @router.post("/incubator/place")
 async def endpoint_incubator_touch(user: str, incubator_id: int) -> bool:
-    return requests.post(f"http://palmon_service_eggs:80/incubator/place?owner={user}&incubator_id={incubator_id}").json()
+    return requests.post(
+        f"http://palmon_service_eggs:80/incubator/place?owner={user}&incubator_id={incubator_id}"
+    ).json()
 
 
 @router.post("/incubator/hatch")
 async def endpoint_incubator_hatch(user: str, incubator_id: int):
-    result = requests.post(f"http://palmon_service_eggs:80/incubator/hatch?owner={user}&incubator_id={incubator_id}").json()
+    result = requests.post(
+        f"http://palmon_service_eggs:80/incubator/hatch?owner={user}&incubator_id={incubator_id}"
+    ).json()
     if result:
         return requests.post("http://palmon_service_palmons:80/palmon").json()
     return False
