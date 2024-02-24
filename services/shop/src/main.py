@@ -1,9 +1,12 @@
+import time
+
 from db import DB
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from objects import Thune
 from presets import Preset
 
+time.sleep(5)
 app = FastAPI()
 
 app.add_middleware(

@@ -1,3 +1,4 @@
+import time
 from random import Random
 from typing import List
 
@@ -7,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from objects import BagSlot, Palmon, StorageSlot
 from presets import Presets
 
+time.sleep(5)
 app = FastAPI()
 
 app.add_middleware(

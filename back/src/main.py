@@ -18,3 +18,7 @@ app.include_router(palmons.router)
 import shop
 
 app.include_router(shop.router)
+
+import egg
+
+app.include_router(egg.router)
