@@ -1,6 +1,6 @@
 # 🐙 PalMon
 
-The game complete all requierements for evaluation. But there is no full game loop as you can't get eggs that are obtainable in "adventure map" wich is not implemented yet. To test everything, we invite you to use cheat codes described at the end of the README file :)  
+The game complete all requierements for evaluation (RabbitMQ queues are implemented only on service "eggs"). But there is no full game loop as you can't get eggs that are obtainable in "adventure map" wich is not implemented yet. To test everything, we invite you to use cheat codes described at the end of the README file :)  
 ### [You have a demo here: https://palmon.chades.fr/](https://palmon.chades.fr/)
 
 ![Schema](ressources/micro_service.drawio-1.png)
