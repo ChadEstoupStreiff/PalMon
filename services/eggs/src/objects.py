@@ -1,3 +1,5 @@
+import json
+
 from db import DB
 from sqlalchemy import Boolean, Column, DateTime, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
@@ -19,6 +21,14 @@ class Incubator(Base):
     owner = Column(String(32), primary_key=True)
     occupied = Column(Boolean)
     hatch_date = Column(DateTime)
+
+    def toJson(self):
+        return {
+            "incubator_id": self.incubator_id,
+            "owner": self.owner,
+            "occupied": self.occupied,
+            "hatch_date": self.hatch_date.strftime("%m/%d/%Y, %H:%M:%S") if self.hatch_date is not None else None,
+        }
 
 
 Base.metadata.create_all(DB().engine)

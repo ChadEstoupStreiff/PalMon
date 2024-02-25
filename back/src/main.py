@@ -19,9 +19,9 @@ import shop
 
 app.include_router(shop.router)
 
-import egg
+import egg_rabbit
 
-app.include_router(egg.router)
+app.include_router(egg_rabbit.router)
 
 import cheat
 

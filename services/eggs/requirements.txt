@@ -5,3 +5,5 @@ python-multipart==0.0.*
 
 mysqlclient
 sqlalchemy
+
+aio_pika
